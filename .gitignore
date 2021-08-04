@@ -1,0 +1,10 @@
+# compiled files
+__pycache__
+
+# models
+tensorboard
+*.pth
+*.pkl
+
+# results
+result
