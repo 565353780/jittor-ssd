@@ -16,6 +16,7 @@ model_path = os.path.join('tensorboard', experiment_id, 'model_best.pkl')
 params = pickle.load(open(model_path, "rb"))
 model = SSD300(21)
 model.load_parameters(params)
+model.eval()
 print(f'[*] Load model {model_path} success')
 
 # Transforms
@@ -48,21 +49,21 @@ def detect(original_image, min_score, max_overlap, top_k, suppress=None):
     if det_labels == ['background']:
         return original_image
     annotated_image = original_image
-    draw = ImageDraw.Draw(annotated_image)
-    font = ImageFont.truetype("ahronbd.ttf", 15)
-    for i in range(det_boxes.shape[0]):
-        if suppress is not None:
-            if det_labels[i] in suppress:
-                continue
-        box_location = det_boxes[i].tolist()
-        draw.rectangle(xy=box_location, outline=label_color_map[det_labels[i]])
-        draw.rectangle(xy=[l + 1. for l in box_location], outline=label_color_map[det_labels[i]]) 
-        text_size = font.getsize(det_labels[i].upper())
-        text_location = [box_location[0] + 2., box_location[1] - text_size[1]]
-        textbox_location = [box_location[0], box_location[1] - text_size[1], box_location[0] + text_size[0] + 4., box_location[1]]
-        draw.rectangle(xy=textbox_location, fill=label_color_map[det_labels[i]])
-        draw.text(xy=text_location, text=det_labels[i].upper(), fill='white', font=font)
-    del draw
+    #  draw = ImageDraw.Draw(annotated_image)
+    #  font = ImageFont.truetype("ahronbd.ttf", 15)
+    #  for i in range(det_boxes.shape[0]):
+        #  if suppress is not None:
+            #  if det_labels[i] in suppress:
+                #  continue
+        #  box_location = det_boxes[i].tolist()
+        #  draw.rectangle(xy=box_location, outline=label_color_map[det_labels[i]])
+        #  draw.rectangle(xy=[l + 1. for l in box_location], outline=label_color_map[det_labels[i]])
+        #  text_size = font.getsize(det_labels[i].upper())
+        #  text_location = [box_location[0] + 2., box_location[1] - text_size[1]]
+        #  textbox_location = [box_location[0], box_location[1] - text_size[1], box_location[0] + text_size[0] + 4., box_location[1]]
+        #  draw.rectangle(xy=textbox_location, fill=label_color_map[det_labels[i]])
+        #  draw.text(xy=text_location, text=det_labels[i].upper(), fill='white', font=font)
+    #  del draw
     return annotated_image
 
 
